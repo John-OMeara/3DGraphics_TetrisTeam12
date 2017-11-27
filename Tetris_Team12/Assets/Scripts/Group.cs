@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Group : MonoBehaviour {
-    
+
+    float lastFall = 0;
+
     // Use this for initialization
     void Start()
     {
@@ -67,7 +69,7 @@ public class Group : MonoBehaviour {
         }
 
         // Move Downwards and Fall
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        else if (Input.GetKeyDown(KeyCode.DownArrow) || Time.time - lastFall >= 1)
         {
             // Modify position
             transform.position += new Vector3(0, -1, 0);
@@ -92,35 +94,9 @@ public class Group : MonoBehaviour {
                 // Disable script
                 enabled = false;
             }
+
+            lastFall = Time.time;
         }
-    }
-
-    void Fall()
-    {
-        // Modify position
-        transform.position += new Vector3(0, -1, 0);
-
-        // See if valid
-        if (IsValidGridPos())
-        {
-            // It's valid. Update grid.
-            UpdateGrid();
-        }
-        else
-        {
-            // It's not valid. revert.
-            transform.position += new Vector3(0, 1, 0);
-
-            // Clear filled horizontal lines
-            Grid.DeleteFullRows();
-
-            // Spawn next Group
-            FindObjectOfType<Controller>().SpawnNext();
-
-            // Disable script
-            enabled = false;
-        }
-        
     }
 
     bool IsValidGridPos()
