@@ -6,6 +6,8 @@ public class Group : MonoBehaviour {
 
     float lastFall = 0;
 
+    float fallDelay = 0.25f;
+
     // Use this for initialization
     void Start()
     {
@@ -18,7 +20,7 @@ public class Group : MonoBehaviour {
         }
 
         //StartCoroutine(Fall());
-        InvokeRepeating("Fall", 0, 1);
+        //InvokeRepeating("Fall", 0, 1);
     }
 
     // Update is called once per frame
@@ -69,7 +71,7 @@ public class Group : MonoBehaviour {
         }
 
         // Move Downwards and Fall
-        else if (Input.GetKeyDown(KeyCode.DownArrow) || Time.time - lastFall >= 1)
+        else if (Input.GetKeyDown(KeyCode.DownArrow) || Time.time - lastFall >= fallDelay)
         {
             // Modify position
             transform.position += new Vector3(0, -1, 0);

@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Grid : MonoBehaviour {
 
+    // Standard Tetris grid is 10 wide and 22 tall (2 offscreen)
     public static int w = 10;
     public static int h = 22;
+
     public static Transform[,] grid = new Transform[w, h];
 
     // Use this for initialization
@@ -43,11 +45,9 @@ public class Grid : MonoBehaviour {
         {
             if (grid[x, y] != null)
             {
-                // Move one towards bottom
                 grid[x, y - 1] = grid[x, y];
                 grid[x, y] = null;
-
-                // Update Block position
+                
                 grid[x, y - 1].position += new Vector3(0, -1, 0);
             }
         }
@@ -69,13 +69,17 @@ public class Grid : MonoBehaviour {
 
     public static void DeleteFullRows()
     {
+        int multiplier = 0;
         for (int y = 0; y < h; ++y)
         {
             if (IsRowFull(y))
             {
+                multiplier++;
                 DeleteRow(y);
                 DecreaseRowsAbove(y + 1);
                 --y;
+
+                FindObjectOfType<Controller>().UpdateScore(multiplier);
             }
         }
     }
