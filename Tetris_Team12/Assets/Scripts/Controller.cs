@@ -5,9 +5,14 @@ using UnityEngine;
 public class Controller : MonoBehaviour {
 
     public GameObject[] groups;
+	public GUIText ScoreText;
+	public GUIText gameOverMenu;
+	public GUIText gameOverScore;
 
     int score = 0;
     int rowPoints = 100;
+
+	bool gameOver = false;
 
 	// Use this for initialization
 	void Start () {
@@ -17,6 +22,9 @@ public class Controller : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         Debug.Log(score);
+		if (gameOver) {
+			gameOverScreen ();
+		}
 	}
 
     /// <summary>
@@ -26,6 +34,7 @@ public class Controller : MonoBehaviour {
     public void UpdateScore(int multiplier)
     {
         score += rowPoints * multiplier;
+		ScoreText.text = "Score: " + score;
     }
 
     /// <summary>
@@ -41,4 +50,20 @@ public class Controller : MonoBehaviour {
             transform.position,
             Quaternion.identity);
     }
+
+	public bool getGameOver()
+	{
+		return gameOver;
+	}
+
+	public void gameOverScreen()
+	{
+		gameOverMenu.text = "Game Over!";
+		gameOverScore.text = "Your Score: " + score;
+	}
+
+	public void setGameOver()
+	{
+		gameOver = true;
+	}
 }

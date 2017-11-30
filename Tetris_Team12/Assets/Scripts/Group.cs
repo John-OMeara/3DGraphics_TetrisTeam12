@@ -17,6 +17,8 @@ public class Group : MonoBehaviour {
         {
             Debug.Log("GAME OVER");
             Destroy(gameObject);
+			FindObjectOfType<Controller> ().setGameOver ();
+
         }
 
         //StartCoroutine(Fall());
@@ -90,9 +92,10 @@ public class Group : MonoBehaviour {
                 // Clear filled horizontal lines
                 Grid.DeleteFullRows();
 
-                // Spawn next Group
-                FindObjectOfType<Controller>().SpawnNext();
-
+				if (FindObjectOfType<Controller> ().getGameOver() == false) {
+					// Spawn next Group
+					FindObjectOfType<Controller> ().SpawnNext ();
+				}
                 // Disable script
                 enabled = false;
             }
