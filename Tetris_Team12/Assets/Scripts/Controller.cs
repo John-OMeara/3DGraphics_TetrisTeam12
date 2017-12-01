@@ -8,9 +8,13 @@ public class Controller : MonoBehaviour {
 	public GUIText ScoreText;
 	public GUIText gameOverMenu;
 	public GUIText gameOverScore;
+	public GameObject button;
+	public string destination;
 
     GameObject nextBlock;
     int[] queue = new int[2];
+
+	public float fallSpeed;
 
     int score = 0;
     int rowPoints = 100;
@@ -19,6 +23,12 @@ public class Controller : MonoBehaviour {
 
 	bool gameOver = false;
 
+
+	public void playSound()
+	{
+		AudioSource audio = GetComponent<AudioSource>();
+		audio.Play();
+	}
 	// Use this for initialization
 	void Start () {
         SpawnNext();
@@ -81,5 +91,16 @@ public class Controller : MonoBehaviour {
 	public void setGameOver()
 	{
 		gameOver = true;
+		Instantiate (button);
+	}
+
+	public float getFallSpeed()
+	{
+		return fallSpeed;
+	}
+
+	public void goMainMenu()
+	{
+		Application.LoadLevel (destination);
 	}
 }

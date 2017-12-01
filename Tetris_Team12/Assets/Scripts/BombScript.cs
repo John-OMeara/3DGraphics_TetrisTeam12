@@ -11,10 +11,17 @@ public class BombScript : MonoBehaviour
 
     bool fall = false;
 
+	AudioSource audio;
+
+	void setAudio(AudioSource audiosource)
+	{
+		audio = audiosource;
+	}
     // Use this for initialization
     void Start()
     {
-
+		audio = GetComponent<AudioSource>();
+		DontDestroyOnLoad (audio);
         // Default position not valid? Then it's game over
         if (!IsValidGridPos())
         {
@@ -96,11 +103,12 @@ public class BombScript : MonoBehaviour
                 {
                     Vector2 v = Grid.RoundVec2(child.position);
                     Grid.BombExplode((int)v.x, (int)v.y);
+					audio.Play ();
                     Destroy(child.gameObject);
                 }
 
                 if (FindObjectOfType<Controller>().getGameOver() == false)
-                {
+				{
                     // Spawn next Group
                     FindObjectOfType<Controller>().SpawnNext();
                 }

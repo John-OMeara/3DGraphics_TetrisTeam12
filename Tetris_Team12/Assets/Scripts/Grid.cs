@@ -132,7 +132,7 @@ public class Grid : MonoBehaviour {
                 DeleteRow(y);
                 DecreaseRowsAbove(y + 1);
                 --y;
-
+				FindObjectOfType<Controller> ().playSound();
                 c.UpdateScore(multiplier);
             }
         }

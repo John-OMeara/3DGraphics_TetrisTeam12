@@ -13,7 +13,7 @@ public class Group : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-
+		fallDelay = FindObjectOfType<Controller> ().getFallSpeed ();
         // Default position not valid? Then it's game over
         if (!IsValidGridPos())
         {
@@ -88,7 +88,7 @@ public class Group : MonoBehaviour {
             else
             {
                 // It's not valid. revert.
-                transform.position += new Vector3(0, 1, 0);
+				transform.position += new Vector3(0, 1, 0);
 
                 // Clear filled horizontal lines
                 Grid.DeleteFullRows();
