@@ -8,6 +8,8 @@ public class Group : MonoBehaviour {
 
     float fallDelay = 0.25f;
 
+    bool fall = false;
+
     // Use this for initialization
     void Start()
     {
@@ -20,9 +22,6 @@ public class Group : MonoBehaviour {
 			FindObjectOfType<Controller> ().setGameOver ();
 
         }
-
-        //StartCoroutine(Fall());
-        //InvokeRepeating("Fall", 0, 1);
     }
 
     // Update is called once per frame
@@ -73,7 +72,9 @@ public class Group : MonoBehaviour {
         }
 
         // Move Downwards and Fall
-        else if (Input.GetKeyDown(KeyCode.DownArrow) || Time.time - lastFall >= fallDelay)
+        else if (Input.GetKeyDown(KeyCode.DownArrow) 
+                || Time.time - lastFall >= fallDelay
+                || fall)
         {
             // Modify position
             transform.position += new Vector3(0, -1, 0);
@@ -101,6 +102,11 @@ public class Group : MonoBehaviour {
             }
 
             lastFall = Time.time;
+        }
+
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            fall = true;
         }
     }
 

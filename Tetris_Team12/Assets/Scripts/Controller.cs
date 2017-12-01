@@ -9,8 +9,13 @@ public class Controller : MonoBehaviour {
 	public GUIText gameOverMenu;
 	public GUIText gameOverScore;
 
+    GameObject nextBlock;
+    int[] queue = new int[2];
+
     int score = 0;
     int rowPoints = 100;
+
+    int lines = 0;
 
 	bool gameOver = false;
 
@@ -21,7 +26,8 @@ public class Controller : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        Debug.Log(score);
+        Debug.Log(lines);
+
 		if (gameOver) {
 			gameOverScreen ();
 		}
@@ -38,6 +44,15 @@ public class Controller : MonoBehaviour {
     }
 
     /// <summary>
+    /// Updates the amount of lines the player has cleared
+    /// </summary>
+    /// <param name="val">New lines to be added</param>
+    public void UpdateLines(int val)
+    {
+        lines += val;
+    }
+
+    /// <summary>
     /// Picks one Tetromino out of the 7 to spawn next
     /// </summary>
     public void SpawnNext()
@@ -46,7 +61,9 @@ public class Controller : MonoBehaviour {
 
         Debug.Log(groups.Length);
 
-        Instantiate(groups[i],
+        Instantiate(
+            //groups[i],
+            groups[1],
             transform.position,
             Quaternion.identity);
     }

@@ -69,18 +69,22 @@ public class Grid : MonoBehaviour {
 
     public static void DeleteFullRows()
     {
+        Controller c = FindObjectOfType<Controller>();
         int multiplier = 0;
+        int rows = 0;
         for (int y = 0; y < h; ++y)
         {
             if (IsRowFull(y))
             {
                 multiplier++;
+                rows++;
                 DeleteRow(y);
                 DecreaseRowsAbove(y + 1);
                 --y;
 
-                FindObjectOfType<Controller>().UpdateScore(multiplier);
+                c.UpdateScore(multiplier);
             }
         }
+        c.UpdateLines(rows);
     }
 }
