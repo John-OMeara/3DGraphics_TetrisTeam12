@@ -793,6 +793,7 @@ MonoBehaviour:
   - {fileID: 1763760090154570, guid: da1365fdb526abd43988f04eac108a6a, type: 2}
   - {fileID: 1720885863742004, guid: a9dc1a9f2dd24bf4998e83665574b541, type: 2}
   - {fileID: 1986674473966052, guid: a76a89f7244264b45b9db3c38a27d9b1, type: 2}
+  - {fileID: 1828466736740916, guid: e00be777acfdabf43966aac9f1aeb28e, type: 2}
   ScoreText: {fileID: 1036284419}
   gameOverMenu: {fileID: 958783000}
   gameOverScore: {fileID: 1504804830}

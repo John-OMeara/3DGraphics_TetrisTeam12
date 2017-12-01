@@ -62,8 +62,7 @@ public class Controller : MonoBehaviour {
         Debug.Log(groups.Length);
 
         Instantiate(
-            //groups[i],
-            groups[1],
+            groups[i],
             transform.position,
             Quaternion.identity);
     }

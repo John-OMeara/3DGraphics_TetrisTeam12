@@ -39,6 +39,57 @@ public class Grid : MonoBehaviour {
         }
     }
 
+    public static void BombExplode(int x, int y)
+    {
+        if (grid[x, y + 1] != null)
+        {
+            Destroy(grid[x, y + 1].gameObject);
+        }
+        if (x != 0)
+        {
+            if (grid[x - 1, y + 1] != null)
+            {
+                Destroy(grid[x - 1, y + 1].gameObject);
+            }
+            if (grid[x - 1, y] != null)
+            {
+                Destroy(grid[x - 1, y].gameObject);
+            }
+        }
+        if (x != 9)
+        {
+            if (grid[x + 1, y + 1] != null)
+            {
+                Destroy(grid[x + 1, y + 1].gameObject);
+            }
+            if (grid[x + 1, y] != null)
+            {
+                Destroy(grid[x + 1, y].gameObject);
+            }
+        }
+        if (x != 0 && y != 0)
+        {
+            if (grid[x - 1, y - 1] != null)
+            {
+                Destroy(grid[x - 1, y - 1].gameObject);
+            }
+        }
+        if (y != 0)
+        {
+            if (grid[x, y - 1] != null)
+            {
+                Destroy(grid[x, y - 1].gameObject);
+            }
+        }
+        if (x != 9 && y != 0)
+        {
+            if (grid[x + 1, y - 1] != null)
+            {
+                Destroy(grid[x + 1, y - 1].gameObject);
+            }
+        }
+    }
+
     public static void DecreaseRow(int y)
     {
         for (int x = 0; x < w; ++x)
