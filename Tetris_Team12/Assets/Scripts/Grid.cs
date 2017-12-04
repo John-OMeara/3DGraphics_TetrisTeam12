@@ -133,7 +133,8 @@ public class Grid : MonoBehaviour {
                 DecreaseRowsAbove(y + 1);
                 --y;
 				FindObjectOfType<Controller> ().playSound();
-                c.UpdateScore(multiplier);
+				FindObjectOfType<Controller> ().GetComponent<ParticleSystem>().Play ();
+				c.UpdateScore(multiplier);
             }
         }
         c.UpdateLines(rows);
