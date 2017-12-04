@@ -10,9 +10,12 @@ public class Group : MonoBehaviour {
 
     bool fall = false;
 
+	AudioSource audio;
+
     // Use this for initialization
     void Start()
     {
+		audio = GetComponent<AudioSource>();
 		fallDelay = FindObjectOfType<Controller> ().getFallSpeed ();
         // Default position not valid? Then it's game over
         if (!IsValidGridPos())
@@ -20,7 +23,6 @@ public class Group : MonoBehaviour {
             Debug.Log("GAME OVER");
             Destroy(gameObject);
 			FindObjectOfType<Controller> ().setGameOver ();
-
         }
     }
 
@@ -96,6 +98,8 @@ public class Group : MonoBehaviour {
 				if (FindObjectOfType<Controller> ().getGameOver() == false) {
 					// Spawn next Group
 					FindObjectOfType<Controller> ().SpawnNext ();
+					audio.Play();
+					gameObject.GetComponentInParent<ParticleSystem> ().Stop();
 				}
                 // Disable script
                 enabled = false;

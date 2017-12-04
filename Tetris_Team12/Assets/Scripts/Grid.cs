@@ -33,8 +33,8 @@ public class Grid : MonoBehaviour {
     public static void DeleteRow(int y)
     {
         for (int x = 0; x < w; ++x)
-        {
-            Destroy(grid[x, y].gameObject);
+		{
+			Destroy(grid[x, y].gameObject);
             grid[x, y] = null;
         }
     }
