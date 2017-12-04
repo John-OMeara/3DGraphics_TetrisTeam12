@@ -2,50 +2,65 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*  
+ *  AUTHOR:     John O'Meara
+ *              Dylan Murphy
+ *
+ *  Script acts as a controller for the game. Handles UI, score
+ *  and spawning of new game pieces.
+ */
+
 public class Controller : MonoBehaviour {
 
-    public GameObject[] groups;
+    public GameObject[] groups;     // The Tetrominos
+
 	public GUIText ScoreText;
     public GUIText LinesText;
 	public GUIText gameOverMenu;
 	public GUIText gameOverScore;
+
 	public GameObject button;
 	public string destination;
 
-    GameObject nextBlock;
-    int[] queue = new int[2];
+	public float fallSpeed;     // Value to be passed in from editor and used as fallDelay
 
-	public float fallSpeed;
-
-    int score = 0;
-    int rowPoints = 100;
-
-    int lines = 0;
+    int score = 0;          // Current score
+    int rowPoints = 100;    // Base points per row
+    int lines = 0;          // Current lines cleared
 
 	bool gameOver = false;
 
-
+    /// <summary>
+    /// Plays sounds
+    /// </summary>
 	public void playSound()
 	{
 		AudioSource audio = GetComponent<AudioSource>();
 		audio.Play();
 	}
-	// Use this for initialization
-	void Start () {
+	
+    /// <summary>
+    /// On start, spawn the first piece
+    /// </summary>
+	void Start ()
+    {
         SpawnNext();
 	}
 	
-	// Update is called once per frame
-	void Update () {
-        Debug.Log(lines);
+	/// <summary>
+    /// If the game ends, go to Game Over screen
+    /// </summary>
+	void Update ()
+    {
 
-		if (gameOver) {
+		if (gameOver)
+        {
 			gameOverScreen ();
 		}
 	}
 
     /// <summary>
-    /// 
+    /// Updates the players score, using multiplier from multiple row clears
     /// </summary>
     /// <param name="multiplier">Bonus for more than one line</param>
     public void UpdateScore(int multiplier)
@@ -70,8 +85,6 @@ public class Controller : MonoBehaviour {
     public void SpawnNext()
     {
         int i = Random.Range(0, groups.Length);
-
-        Debug.Log(groups.Length);
 
         Instantiate(
             groups[i],

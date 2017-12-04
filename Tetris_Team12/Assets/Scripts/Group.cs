@@ -2,118 +2,135 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*  
+ *  AUTHOR:     John O'Meara,
+ *              Dylan Murphy
+ *              
+ *  Script that controls the game field. Handles boundary checking, 
+ *  block clearing and the bomb explosion logic.
+ */
+
 public class Group : MonoBehaviour {
 
-    float lastFall = 0;
+    float lastFall = 0;         // Time that the last auto fall was triggered
+    float fallDelay = 0.25f;    // The time between auto falls
 
-    float fallDelay = 0.25f;
-
-    bool fall = false;
+    bool fall = false;          // If it immediatly drops or not
 
 	AudioSource audio;
 
-    // Use this for initialization
+    /// <summary>
+    /// Called when the Tetromino is created. 
+    /// 
+    /// Sets up the audio and fallDelay variable. Checks if the starting position
+    /// is still valid, else it's a game over.
+    /// </summary>
     void Start()
     {
 		audio = GetComponent<AudioSource>();
 		fallDelay = FindObjectOfType<Controller> ().getFallSpeed ();
-        // Default position not valid? Then it's game over
+
         if (!IsValidGridPos())
         {
-            Debug.Log("GAME OVER");
             Destroy(gameObject);
 			FindObjectOfType<Controller> ().setGameOver ();
         }
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Called every update frame.
+    /// 
+    /// Checks player input and moves the block downwards.
+    /// </summary>
     void Update()
     {
-        // Move Left
+        // LEFT
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            // Modify position
-            transform.position += new Vector3(-1, 0, 0);
-
-            // See if valid
-            if (IsValidGridPos())
-                // It's valid. Update grid.
-                UpdateGrid();
-            else
-                // It's not valid. revert.
-                transform.position += new Vector3(1, 0, 0);
+            Move(new Vector3(-1, 0, 0));
         }
 
-        // Move Right
+        // RIGHT
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            // Modify position
-            transform.position += new Vector3(1, 0, 0);
-
-            // See if valid
-            if (IsValidGridPos())
-                // It's valid. Update grid.
-                UpdateGrid();
-            else
-                // It's not valid. revert.
-                transform.position += new Vector3(-1, 0, 0);
+            Move(new Vector3(1, 0, 0));
         }
 
-        // Rotate
+        // ROTATE
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             transform.Rotate(0, 0, -90);
-
-            // See if valid
-            if (IsValidGridPos())
-                // It's valid. Update grid.
-                UpdateGrid();
-            else
-                // It's not valid. revert.
-                transform.Rotate(0, 0, 90);
-        }
-
-        // Move Downwards and Fall
-        else if (Input.GetKeyDown(KeyCode.DownArrow) 
-                || Time.time - lastFall >= fallDelay
-                || fall)
-        {
-            // Modify position
-            transform.position += new Vector3(0, -1, 0);
-
-            // See if valid
+            
             if (IsValidGridPos())
             {
-                // It's valid. Update grid.
                 UpdateGrid();
             }
             else
             {
-                // It's not valid. revert.
-				transform.position += new Vector3(0, 1, 0);
+                transform.Rotate(0, 0, 90);
+            }
+        }
 
-                // Clear filled horizontal lines
+        // DOWN
+        else if (Input.GetKeyDown(KeyCode.DownArrow)    // Down key is pressed
+                || Time.time - lastFall >= fallDelay    // Automatic fall interval
+                || fall)                                // Space key, immediate fall
+        {
+            transform.position += new Vector3(0, -1, 0);
+            
+            if (IsValidGridPos())
+            {
+                UpdateGrid();
+            }
+            else
+            {
+				transform.position += new Vector3(0, 1, 0);
+                
                 Grid.DeleteFullRows();
 
-				if (FindObjectOfType<Controller> ().getGameOver() == false) {
-					// Spawn next Group
+				if (FindObjectOfType<Controller> ().getGameOver() == false)
+                {
 					FindObjectOfType<Controller> ().SpawnNext ();
 					audio.Play();
 					gameObject.GetComponentInParent<ParticleSystem> ().Stop();
 				}
-                // Disable script
+
                 enabled = false;
             }
 
             lastFall = Time.time;
         }
 
+        // SPACE, immediate fall
         if(Input.GetKeyDown(KeyCode.Space))
         {
             fall = true;
         }
     }
 
+    /// <summary>
+    /// Attempts to move the tetromino a certain direction. If it's not valid it
+    /// reverts the move.
+    /// </summary>
+    /// <param name="dir">Direction to move towards</param>
+    void Move(Vector3 dir)
+    {
+        transform.position += dir;
+        
+        if (IsValidGridPos())
+        {
+            UpdateGrid();
+        }
+        else
+        {
+            transform.position += dir *-1;
+        }
+    } 
+
+    /// <summary>
+    /// Checks if the new position is valid.
+    /// </summary>
+    /// <returns>True if valid, false if invalid</returns>
     bool IsValidGridPos()
     {
         foreach (Transform child in transform)
@@ -121,28 +138,39 @@ public class Group : MonoBehaviour {
             Vector2 v = Grid.RoundVec2(child.position);
             Debug.Log(v);
         
-            // Not inside Border?
             if (!Grid.InsideBorder(v))
+            {
                 return false;
-        
-            // Block in grid cell (and not part of same group)?
+            }
+            
             if (Grid.grid[(int)v.x, (int)v.y] != null &&
                 Grid.grid[(int)v.x, (int)v.y].parent != transform)
+            {
                 return false;
+            }
         }
         return true;
     }
 
+    /// <summary>
+    /// Updates the representation of the playfield
+    /// </summary>
     void UpdateGrid()
     {
-        // Remove old children from grid
         for (int y = 0; y < Grid.h; ++y)
+        {
             for (int x = 0; x < Grid.w; ++x)
+            {
                 if (Grid.grid[x, y] != null)
+                {
                     if (Grid.grid[x, y].parent == transform)
+                    {
                         Grid.grid[x, y] = null;
-
-        // Add new children to grid
+                    }
+                }
+            }
+        }
+        
         foreach (Transform child in transform)
         {
             Vector2 v = Grid.RoundVec2(child.position);

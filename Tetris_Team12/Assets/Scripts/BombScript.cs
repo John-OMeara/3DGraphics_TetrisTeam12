@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * AUTHOR: John Codd
+ * 
+ * Script that controls the bomb objects
+ */
+
 public class BombScript : MonoBehaviour
 {
 
