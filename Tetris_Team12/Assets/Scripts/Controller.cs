@@ -6,6 +6,7 @@ public class Controller : MonoBehaviour {
 
     public GameObject[] groups;
 	public GUIText ScoreText;
+    public GUIText LinesText;
 	public GUIText gameOverMenu;
 	public GUIText gameOverScore;
 	public GameObject button;
@@ -50,7 +51,7 @@ public class Controller : MonoBehaviour {
     public void UpdateScore(int multiplier)
     {
         score += rowPoints * multiplier;
-		ScoreText.text = "Score: " + score;
+		ScoreText.text = "SCORE: " + score;
     }
 
     /// <summary>
@@ -60,6 +61,7 @@ public class Controller : MonoBehaviour {
     public void UpdateLines(int val)
     {
         lines += val;
+        LinesText.text = "LINES: " + lines;
     }
 
     /// <summary>
