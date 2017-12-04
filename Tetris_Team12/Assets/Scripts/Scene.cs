@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*  
+ *  AUTHOR:     Dylan Murphy
+ *              
+ *  Script that handles scene switching.
+ */
+
 public class Scene : MonoBehaviour {
 
 	public string destination;
